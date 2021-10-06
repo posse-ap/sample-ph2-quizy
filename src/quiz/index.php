@@ -22,8 +22,9 @@ if (isset($_GET['question_id'])) {
 
 <body>
   <div class="main">
-    <?php foreach ($questions as $question) : ?>
+    <?php foreach ($questions as $index => $question) : ?>
       <?php
+      $question_index = $index + 1;
       $stmt = $db->prepare('SELECT * FROM choices WHERE question_id = ?');
       $stmt->execute(array($question['id']));
       $choices = $stmt->fetchAll();
@@ -32,24 +33,24 @@ if (isset($_GET['question_id'])) {
       $answer = $stmt->fetch();
       ?>
       <div class="quiz">
-        <h1><?php echo $question['id']; ?>. この地名はなんて読む？</h1>
+        <h1><?php echo $question_index; ?>. この地名はなんて読む？</h1>
         <img src="/img/<?php echo $question['image']; ?>">
         <ul>
           <?php foreach ($choices as $index => $choice) : ?>
             <li
-              id="answerlist_<?php echo $question['id'] . '_' . ($index + 1); ?>" name="answerlist_<?php echo $question['id']; ?>"
+              id="answerlist_<?php echo $question_index . '_' . ($index + 1); ?>" name="answerlist_<?php echo $question_index; ?>"
               class="answerlist"
               onclick="check(
-                <?php echo $question['id']; ?>,
+                <?php echo $question_index; ?>,
                 <?php echo ($index + 1); ?>,
-                <?php echo $answer['id']; ?>
+                <?php echo $answer['id'] - (($question['id'] - 1) * 3); ?>
               )"
             >
               <?php echo $choice['name']; ?>
             </li>
           <?php endforeach; ?>
-          <li id="answerbox_<?php echo $question['id']; ?>" class="answerbox">
-            <span id="answertext_<?php echo $question['id']; ?>"></span><br>
+          <li id="answerbox_<?php echo $question_index; ?>" class="answerbox">
+            <span id="answertext_<?php echo $question_index; ?>"></span><br>
             <span>
               正解は「
               <?php echo $answer['name']; ?>
