@@ -1,5 +1,5 @@
 <?php
-$dsn = 'mysql:host=mysql;dbname=posse;charset=utf8;';
+$dsn = 'mysql:host=mysql;dbname=mysql;charset=utf8;';
 $user = 'posse_user';
 $password = 'password';
 
